@@ -1,6 +1,6 @@
 # ReactNative-Challenge-3
 
-<img src="https://user-images.githubusercontent.com/7335120/34905427-3f093db0-f87e-11e7-91cb-abef84e62272.gif" width="350">
+<img src="https://user-images.githubusercontent.com/7335120/34905522-72c5f95c-f880-11e7-9513-60368041e9fd.gif" width="350">
 
 
 ## How to run?
