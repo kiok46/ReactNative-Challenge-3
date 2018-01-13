@@ -163,15 +163,16 @@ class PhotoFocus extends React.Component {
             <Animated.View
                 style={[styles.content, animatedContentStyle]}
             >
-                <Text style={styles.title}>
-                    Meme Gallery
+                <View style={styles.headingStyle}>
+                    <Text style={styles.title}>
+                        Life
+                    </Text>
+                </View>
+                <Text style={styles.contentStyle}>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo reprehenderit optio amet ab temporibus asperiores quasi cupiditate. Voluptatum ducimus voluptates voluptas?
                 </Text>
-                <Text>
-                    This is a meme. This is a meme. This is a meme. 
-                    This is a meme. This is a meme. This is a meme. 
-                    This is a meme. This is a meme. This is a meme. 
-                    This is a meme. This is a meme. This is a meme. 
-                    This is a meme. This is a meme. This is a meme. 
+                <Text style={styles.contentStyle}>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo reprehenderit optio amet ab temporibus asperiores quasi cupiditate. Voluptatum ducimus voluptates voluptas?
                 </Text>
             </Animated.View>
         </View>
@@ -205,11 +206,11 @@ const styles = StyleSheet.create({
       height: 150,
   },
   topContent: {
-      flex: 1, 
+      flex: 2, 
   },
   content: {
-      flex: 2,
-      backgroundColor: 'white'
+      flex: 3,
+      backgroundColor: 'rgb(240, 240, 240)'
   },
   viewImage: {
       width: null,
@@ -218,8 +219,16 @@ const styles = StyleSheet.create({
       top: 0,
       left: 0
   },
+  headingStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 10,
+  },
   title: {
-      fontSize: 28
+      fontSize: 28,
+  },
+  contentStyle: {
+    margin: 10
   },
   close: {
       position: "absolute",
