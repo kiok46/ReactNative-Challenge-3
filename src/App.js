@@ -1,6 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableWithoutFeedback, Animated } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    ScrollView,
+    TouchableWithoutFeedback,
+    Animated
+} from 'react-native';
+
 import Images from './images';
+
+const DUMMY_TEXT = "Lorem ipsum dolor sit amet,consectetur adipisicing elit.\
+Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo \
+reprehenderit optio amet ab temporibus asperiores quasi cupiditate. \
+Voluptatum ducimus voluptates voluptas?"
 
 
 class PhotoFocus extends React.Component {
@@ -17,7 +31,7 @@ class PhotoFocus extends React.Component {
       this._gridImages = {};
   }
 
-  handleOpenImage = (idx) => {
+  handleOpeningImage = (idx) => {
     this._gridImages[idx].measure((x, y, width, height, pageX, pageY) => {
         this._x = pageX
         this._y = pageY
@@ -90,8 +104,38 @@ class PhotoFocus extends React.Component {
       })
   }
 
-  render() {
+  renderFocusableImages = () => {
 
+    const activeIndexStyle = {
+        opacity: this.state.activeImage ? 0 : 1
+    }
+
+    return (
+        <View style={styles.grid}>
+            {
+                Images.map((src, idx) => {
+
+                    const activeStyle = idx === this.state.activeIndex ? activeIndexStyle : undefined
+                    return (
+                        <TouchableWithoutFeedback
+                            key={idx}
+                            onPress={() => this.handleOpeningImage(idx)}
+                        >
+                            <Image
+                                source={src}
+                                resizeMode="cover"
+                                style={[styles.photoStyle, activeStyle]}
+                                ref={image => this._gridImages[idx] = image}
+                            />
+                        </TouchableWithoutFeedback>
+                    )
+                })
+            }
+        </View>
+    )
+  }
+
+  renderImageDummyData = () => {
     const animatedContentTranslate = this.state.animation.interpolate({
         inputRange: [0, 1],
         outputRange: [300, 0]
@@ -105,48 +149,61 @@ class PhotoFocus extends React.Component {
             }
         ]
     }
+      return (
+            <Animated.View
+                style={[styles.content, animatedContentStyle]}
+            >
+                <View style={styles.headingStyle}>
+                    <Text style={styles.title}>
+                        Life
+                    </Text>
+                </View>
+                <Text style={styles.contentStyle}>
+                    {DUMMY_TEXT}
+                </Text>
+                <Text style={styles.contentStyle}>
+                    {DUMMY_TEXT}
+                </Text>
+            </Animated.View>
+      )
+  }
 
+
+  renderImageCloseButton = () => {
+    const animatedCloseStyle = {
+        opacity: this.state.animation
+    }
+    return (
+        <TouchableWithoutFeedback onPress={this.handleClose}>
+            <Animated.View  style={[styles.close, animatedCloseStyle]}>
+                <Text style={styles.closeText}>X</Text>
+            </Animated.View>
+        </TouchableWithoutFeedback>
+    )
+  }
+
+  renderActiveImage = () => {
     const activeImageStyle = {
         width: this.state.size.x,
         height: this.state.size.y,
         top: this.state.position.y,
         left: this.state.position.x
     }
+    return (
+        <Animated.Image
+            key={this.state.activeImage}
+            source={this.state.activeImage}
+            resizeMode="cover"
+            style={[styles.viewImage, activeImageStyle]}
+        />
+    )
+  }
 
-    const activeIndexStyle = {
-        opacity: this.state.activeImage ? 0 : 1
-    }
-
-    const animatedCloseStyle = {
-        opacity: this.state.animation
-    }
-
-
+  render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.container}>
-            <View style={styles.grid}>
-            {
-                Images.map((src, idx) => {
-
-                    const style = idx === this.state.activeIndex ? activeIndexStyle : undefined
-
-                    return (
-                        <TouchableWithoutFeedback
-                            key={idx}
-                            onPress={() => this.handleOpenImage(idx)}
-                        >
-                            <Image
-                                source={src}
-                                resizeMode="cover"
-                                style={[styles.photoStyle, style]}
-                                ref={image => this._gridImages[idx] = image}
-                            />
-                        </TouchableWithoutFeedback>
-                    )
-                })
-            }
-            </View>
+        <ScrollView>
+            {this.renderFocusableImages()}
         </ScrollView>
 
         <View 
@@ -158,35 +215,11 @@ class PhotoFocus extends React.Component {
                 ref={image => this._viewImage = image}
                 onLayout={() => {}} // For Android
             >
-                
             </View>
-            <Animated.View
-                style={[styles.content, animatedContentStyle]}
-            >
-                <View style={styles.headingStyle}>
-                    <Text style={styles.title}>
-                        Life
-                    </Text>
-                </View>
-                <Text style={styles.contentStyle}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo reprehenderit optio amet ab temporibus asperiores quasi cupiditate. Voluptatum ducimus voluptates voluptas?
-                </Text>
-                <Text style={styles.contentStyle}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non quis exercitationem culpa nesciunt nihil aut nostrum explicabo reprehenderit optio amet ab temporibus asperiores quasi cupiditate. Voluptatum ducimus voluptates voluptas?
-                </Text>
-            </Animated.View>
+            {this.renderImageDummyData()}
         </View>
-        <Animated.Image
-            key={this.state.activeImage}
-            source={this.state.activeImage}
-            resizeMode="cover"
-            style={[styles.viewImage, activeImageStyle]}
-        />
-        <TouchableWithoutFeedback onPress={this.handleClose}>
-            <Animated.View  style={[styles.close, animatedCloseStyle]}>
-                <Text style={styles.closeText}>X</Text>
-            </Animated.View>
-        </TouchableWithoutFeedback>
+        {this.renderActiveImage()}
+        {this.renderImageCloseButton()}
       </View>
     );
   }
